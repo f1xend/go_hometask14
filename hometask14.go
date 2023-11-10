@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
+	"sort"
 )
 
 type animal struct {
@@ -48,6 +49,7 @@ func readFile(path string) (animalList, error) {
 		}
 
 		animals.List = append(animals.List, animal)
+		sort.Slice(animals.List, func(i, j int) bool { return animals.List[i].Age < animals.List[j].Age })
 	}
 	return animals, nil
 }
