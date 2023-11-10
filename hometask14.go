@@ -6,14 +6,14 @@ import (
 	"os"
 )
 
-type Animal struct {
+type animal struct {
 	Name  string `json:"name"`
 	Age   int    `json:"age"`
 	Email string `json:"email"`
 }
 
-type AnimalList struct {
-	List []Animal `json:"animals"`
+type animalList struct {
+	List []animal `json:"animals"`
 }
 
 func Do(pathRead, pathWrite string) error {
@@ -29,22 +29,22 @@ func Do(pathRead, pathWrite string) error {
 	return nil
 }
 
-func readFile(path string) (AnimalList, error) {
+func readFile(path string) (animalList, error) {
 	file, err := os.Open(path)
 	if err != nil {
-		return AnimalList{}, fmt.Errorf("failed to open file: %w", err)
+		return animalList{}, fmt.Errorf("failed to open file: %w", err)
 	}
 	defer file.Close()
 
-	var animals = AnimalList{}
+	var animals = animalList{}
 
 	dec := json.NewDecoder(file)
 
 	for dec.More() {
-		var animal Animal
+		var animal animal
 		err := dec.Decode(&animal)
 		if err != nil {
-			return AnimalList{}, fmt.Errorf("failed to decode json: %w", err)
+			return animalList{}, fmt.Errorf("failed to decode json: %w", err)
 		}
 
 		animals.List = append(animals.List, animal)
@@ -52,7 +52,7 @@ func readFile(path string) (AnimalList, error) {
 	return animals, nil
 }
 
-func writeFile(path string, animals AnimalList) error {
+func writeFile(path string, animals animalList) error {
 	file, err := os.Create(path)
 	if err != nil {
 		return fmt.Errorf("failed to create file: %w", err)
