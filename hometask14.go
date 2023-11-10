@@ -2,9 +2,9 @@ package gohometask14
 
 import (
 	"encoding/json"
-	"encoding/xml"
 	"fmt"
 	"os"
+	"sort"
 )
 
 type animal struct {
@@ -49,6 +49,7 @@ func readFile(path string) (animalList, error) {
 		}
 
 		animals.List = append(animals.List, animal)
+		sort.Slice(animals.List, func(i, j int) bool { return animals.List[i].Age < animals.List[j].Age })
 	}
 	return animals, nil
 }
@@ -60,11 +61,7 @@ func writeFile(path string, animals animalList) error {
 	}
 	defer file.Close()
 
-	file.WriteString(xml.Header)
-
-	dec := xml.NewEncoder(file)
-	dec.Indent("", " ")
-	dec.Encode(animals.List)
+	err = json.NewEncoder(file).Encode(animals.List)
 	if err != nil {
 		return fmt.Errorf("failed to encode json: %w", err)
 	}
