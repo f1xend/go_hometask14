@@ -2,6 +2,7 @@ package gohometask14
 
 import (
 	"encoding/json"
+	"encoding/xml"
 	"fmt"
 	"os"
 	"sort"
@@ -61,7 +62,11 @@ func writeFile(path string, animals animalList) error {
 	}
 	defer file.Close()
 
-	err = json.NewEncoder(file).Encode(animals.List)
+	file.WriteString(xml.Header)
+
+	dec := xml.NewEncoder(file)
+	dec.Indent("", " ")
+	err = dec.Encode(animals.List)
 	if err != nil {
 		return fmt.Errorf("failed to encode json: %w", err)
 	}
