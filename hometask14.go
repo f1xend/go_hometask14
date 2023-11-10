@@ -21,7 +21,7 @@ type animalList struct {
 func Do(pathRead, pathWrite string) error {
 	res, err := readFile(pathRead)
 	if err != nil {
-		return fmt.Errorf("failed read file : %w", err)
+		return fmt.Errorf("failed read file: %w", err)
 	}
 
 	err = writeFile(pathWrite, res)
